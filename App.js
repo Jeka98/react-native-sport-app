@@ -112,6 +112,15 @@ export default class App extends Component<Props> {
     );
   }
 
+  refreshText() {
+    this.setState({text: ''});
+  }
+
+  closeModal() {
+    this.setModalVisible(false);
+    this.refreshText();
+  }
+
   addItem(){
     this.setModalVisible(true);
   }
@@ -126,7 +135,7 @@ export default class App extends Component<Props> {
           transparent={false}
           visible={this.state.modalVisible}
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
+            this.closeModal();
           }}>
           <View style={{marginTop: 22}}>
             <View>
