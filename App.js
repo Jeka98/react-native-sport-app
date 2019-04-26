@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ListView, TouchableHighlight, Modal, TextInput } from 'react-native';
+import { Platform, Button, StyleSheet, Text, View, ListView, TouchableHighlight, Modal, TextInput } from 'react-native';
 import * as firebase from 'firebase';
 import Toolbar from './src/components/Toolbar/Toolbar';
 import Addbutton from './src/components/Addbutton/Addbutton';
@@ -43,7 +43,8 @@ export default class App extends Component<Props> {
     this.itemsRef = this.getRef().child('items');
 
     this.renderRow = this.renderRow.bind(this);
-    this.pressRow = this.pressRow.bind(this);
+    this.pressDelete = this.pressDelete.bind(this);
+    this.pressEdit = this.pressEdit.bind(this);
   }
 
   handleFocus = event => {
@@ -94,21 +95,43 @@ export default class App extends Component<Props> {
     });
   }
 
-  pressRow(item){
+  pressDelete(item){
     this.itemsRef.child(item._key).remove();
+  }
+
+  pressEdit(item){
+    
   }
 
   renderRow(item){
     return (
-      <TouchableHighlight onPress={() => {
-        this.pressRow(item);
-      }}>
+      // <TouchableHighlight onPress={() => {
+      //   this.pressRow(item);
+      // }}>
         <View style={styles.li}>
           <Text style={styles.liText}>
             {item.title}
           </Text>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.removeBtn}>
+              <Button 
+                title="Remove" 
+                onPress={() => {
+                  this.pressDelete(item);
+                }}>
+              </Button>
+            </View>
+            <View style={styles.editBtn}>
+              <Button 
+                title="Edit"
+                onPress={() => {
+                  this.pressEdit(item);
+                }}>
+              </Button>
+            </View>
+          </View>
         </View>
-      </TouchableHighlight>
+      // </TouchableHighlight>
     );
   }
 
@@ -165,7 +188,7 @@ export default class App extends Component<Props> {
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
                 }}>
-                <Text style={styles.cancel}>Cansel</Text>
+                <Text style={styles.cancel}>Canсel</Text>
               </TouchableHighlight>
 
             </View>
