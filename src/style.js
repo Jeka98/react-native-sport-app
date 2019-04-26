@@ -23,13 +23,16 @@ module.exports = StyleSheet.create({
     paddingLeft: 16,
     paddingTop: 14,
     paddingBottom: 16,
+    display: 'flex',
+    flexDirection: 'row',
   },
   liContainer: {
     flex: 2
   },
   liText: {
     color: '#333333',
-    fontSize: 16
+    fontSize: 16,
+    flex: 2,
   },
   navbar: {
     alignItems: 'center',
@@ -88,5 +91,17 @@ module.exports = StyleSheet.create({
     paddingLeft: 16,
     paddingTop: 10,
     paddingBottom: 10
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    flex: 2,
+    justifyContent: 'center',
+  },
+  editBtn: {
+    flex: 1
+  },
+  removeBtn: {
+    flex: 1,
+    color: '#F65076',
   }
 });
