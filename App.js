@@ -35,9 +35,12 @@ export default class App extends Component<Props> {
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       text: '',
+      editText: '',
+      itemToEdit: null,
       itemDataSource: ds,
       modalVisible: false,
-      isFocused: false
+      isFocused: false,
+      editModalVisible: false
     }
 
     this.itemsRef = this.getRef().child('items');
@@ -100,14 +103,18 @@ export default class App extends Component<Props> {
   }
 
   pressEdit(item){
-    
+    this.setState({
+      editModalVisible: true,
+      itemToEdit: item,
+    })
+  }
+
+  closeEditModal(item){
+    this.setState({editModalVisible: false})
   }
 
   renderRow(item){
     return (
-      // <TouchableHighlight onPress={() => {
-      //   this.pressRow(item);
-      // }}>
         <View style={styles.li}>
           <Text style={styles.liText}>
             {item.title}
@@ -131,7 +138,6 @@ export default class App extends Component<Props> {
             </View>
           </View>
         </View>
-      // </TouchableHighlight>
     );
   }
 
@@ -139,7 +145,7 @@ export default class App extends Component<Props> {
     this.setState({text: ''});
   }
 
-  closeModal() {
+  closeAddModal() {
     this.setModalVisible(false);
     this.refreshText();
   }
@@ -158,7 +164,7 @@ export default class App extends Component<Props> {
           transparent={false}
           visible={this.state.modalVisible}
           onRequestClose={() => {
-            this.closeModal();
+            this.closeAddModal();
           }}>
           <View style={{marginTop: 22}}>
             <View>
@@ -187,6 +193,52 @@ export default class App extends Component<Props> {
               <TouchableHighlight
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text style={styles.cancel}>Canсel</Text>
+              </TouchableHighlight>
+
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.editModalVisible}
+          onRequestClose={() => {
+            this.closeEditModal();
+          }}>
+          <View style={{marginTop: 22}}>
+            <View>
+              <Toolbar title='Edit item' />
+              <TextInput
+                style={styles.input}
+                selectionColor={BLUE}
+                underlineColorAndroid={
+                  isFocused ? BLUE : LIGHT_GRAY
+                }
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                {...otherProps}
+                value={this.state.editText}
+                placeholder='Edit item'
+                onChangeText={(value) => this.setState({editText:value})}
+              />
+              <TouchableHighlight
+                onPress={() => {
+                  var updates = {};
+                  var key = this.state.itemToEdit._key;
+                  updates['/items/' + key] = {title: this.state.editText };
+                  this.getRef().update(updates);
+
+                  this.closeEditModal();
+                }}>
+                <Text style={styles.save}>Save Item</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight
+                onPress={() => {
+                  this.closeEditModal();
                 }}>
                 <Text style={styles.cancel}>Canсel</Text>
               </TouchableHighlight>
