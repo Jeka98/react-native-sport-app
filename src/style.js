@@ -1,7 +1,7 @@
 'use strict'
 
 let React = require('react-native');
-let { StyleSheet } = React;
+const { StyleSheet } = React;
 
 const constants = {
   actionsColor: '#3cb371'
