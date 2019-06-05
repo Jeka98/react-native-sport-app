@@ -1,11 +1,12 @@
 'use strict'
 
-let React = require('react-native');
-let { StyleSheet } = React;
+const React = require('react-native');
+
+const { StyleSheet } = React;
 
 const constants = {
   actionsColor: '#3cb371'
-}
+};
 
 module.exports = StyleSheet.create({
   container: {
@@ -25,6 +26,15 @@ module.exports = StyleSheet.create({
     paddingBottom: 16,
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  text: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 3,
+  },
+  subText: {
+    paddingRight: 20,
   },
   liContainer: {
     flex: 2
@@ -36,16 +46,14 @@ module.exports = StyleSheet.create({
   },
   navbar: {
     alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#eeeeee',
-    borderWidth: 1,
+    backgroundColor: '#2F80ED',
     justifyContent: 'center',
     height: 44,
     flexDirection: 'row'
   },
   navbarTitle: {
-    color: '#444444',
-    fontSize: 16,
+    color: '#ffffff',
+    fontSize: 24,
     fontWeight: '500'
   },
   toolbar: {
@@ -94,14 +102,15 @@ module.exports = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
   },
   editBtn: {
-    flex: 1
+    paddingTop: 5,
+    flex: 0.5
   },
   removeBtn: {
-    flex: 1,
+    flex: 0.5,
     color: '#F65076',
   }
 });
