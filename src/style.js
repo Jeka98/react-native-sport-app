@@ -26,6 +26,15 @@ module.exports = StyleSheet.create({
     paddingBottom: 16,
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  text: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 3,
+  },
+  subText: {
+    paddingRight: 20,
   },
   liContainer: {
     flex: 2
@@ -93,14 +102,15 @@ module.exports = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
   },
   editBtn: {
-    flex: 1
+    paddingTop: 5,
+    flex: 0.5
   },
   removeBtn: {
-    flex: 1,
+    flex: 0.5,
     color: '#F65076',
   }
 });

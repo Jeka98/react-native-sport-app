@@ -9,7 +9,7 @@
 
 import React, { Component } from 'react';
 import {
-  Button,
+  Image,
   Text,
   View,
   ListView,
@@ -18,7 +18,7 @@ import {
   TextInput
 } from 'react-native';
 import * as firebase from 'firebase';
-// import { logo } from './src/icons/web_hi_res_512.png';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Toolbar from './src/components/Toolbar/Toolbar';
 import Addbutton from './src/components/Addbutton/Addbutton';
 
@@ -143,27 +143,42 @@ export default class App extends Component<Props> {
   renderRow(item) {
     return (
       <View style={styles.li}>
-        <Text style={styles.liText}>
-          {item.title}
-          {item.repetitionNumber}
-          {item.approachNumber}
-        </Text>
-        <Text>{item.repetitionNumber}</Text>
-        <Text>{item.approachNumber}</Text>
+        <View style={styles.text}>
+          <Text style={styles.liText}>
+            {item.title}
+          </Text>
+          <Text>
+            <Text style={styles.subText}>
+              {item.repetitionNumber}
+              {' - '}
+              Поворений
+              {'      '}
+            </Text>
+            <Text style={styles.subText}>
+              {item.approachNumber}
+              {' - '}
+              Подходов
+            </Text>
+          </Text>
+        </View>
         <View style={styles.buttonsContainer}>
-          <View style={styles.removeBtn}>
-            <Button
-              title="Remove"
+          <View style={styles.editBtn}>
+            <Icon
+              name="pencil"
+              size={22}
+              color="#30ba46"
               onPress={() => {
-                this.pressDelete(item);
+                this.pressEdit(item);
               }}
             />
           </View>
-          <View style={styles.editBtn}>
-            <Button
-              title="Edit"
+          <View style={styles.removeBtn}>
+            <Icon
+              name="times"
+              size={30}
+              color="#900"
               onPress={() => {
-                this.pressEdit(item);
+                this.pressDelete(item);
               }}
             />
           </View>
@@ -214,6 +229,7 @@ export default class App extends Component<Props> {
                 onBlur={this.handleBlur}
                 {...otherProps}
                 value={this.state.repNumber}
+                keyboardType="numeric"
                 placeholder="Количество повторений"
                 onChangeText={(value) => this.setState({repNumber:value})}
               />
@@ -228,6 +244,7 @@ export default class App extends Component<Props> {
                 onBlur={this.handleBlur}
                 {...otherProps}
                 value={this.state.apprNumber}
+                keyboardType="numeric"
                 placeholder="Количесвто подходов"
                 onChangeText={(value) => this.setState({apprNumber:value})}
               />
@@ -288,6 +305,7 @@ export default class App extends Component<Props> {
                 {...otherProps}
                 /* value={this.state.itemToEdit ? this.state.itemToEdit.repetitionNumber : ''} */
                 value={this.state.itemToEdit ? this.state.itemToEdit.repNumber : ''}
+                keyboardType="numeric"
                 placeholder="Количество повторений"
                 onChangeText={(value) => this.setState({editRepNumber:value})}
               />
@@ -302,6 +320,7 @@ export default class App extends Component<Props> {
                 onBlur={this.handleBlur}
                 {...otherProps}
                 value={this.state.itemToEdit ? this.state.itemToEdit.apprNumber : ''}
+                keyboardType="numeric"
                 placeholder="Количество подходов"
                 onChangeText={(value) => this.setState({editApprNumber:value})}
               />
