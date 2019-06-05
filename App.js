@@ -8,19 +8,28 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, Button, StyleSheet, Text, View, ListView, TouchableHighlight, Modal, TextInput } from 'react-native';
+import {
+  Button,
+  Text,
+  View,
+  ListView,
+  TouchableHighlight,
+  Modal,
+  TextInput
+} from 'react-native';
 import * as firebase from 'firebase';
+// import { logo } from './src/icons/web_hi_res_512.png';
 import Toolbar from './src/components/Toolbar/Toolbar';
 import Addbutton from './src/components/Addbutton/Addbutton';
 
 const styles = require('./src/style');
 
 const config = {
-  apiKey: "AIzaSyCG0R8zgfVAN5s7Abco5p-mHiWEG6OlQzg",
-  authDomain: "reactnative-783aa.firebaseapp.com",
-  databaseURL: "https://reactnative-783aa.firebaseio.com",
-  projectId: "reactnative-783aa",
-  storageBucket: "reactnative-783aa.appspot.com",
+  apiKey: 'AIzaSyCG0R8zgfVAN5s7Abco5p-mHiWEG6OlQzg',
+  authDomain: 'reactnative-783aa.firebaseapp.com',
+  databaseURL: 'https://reactnative-783aa.firebaseio.com',
+  projectId: 'reactnative-783aa',
+  storageBucket: 'reactnative-783aa.appspot.com',
 };
 
 const firebaseApp = firebase.initializeApp(config);
@@ -35,7 +44,11 @@ export default class App extends Component<Props> {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       text: '',
+      repNumber: '',
+      apprNumber: '',
       editText: '',
+      editRepNumber: '',
+      editApprNumber: '',
       itemToEdit: null,
       itemDataSource: ds,
       modalVisible: false,
@@ -50,23 +63,6 @@ export default class App extends Component<Props> {
     this.pressEdit = this.pressEdit.bind(this);
   }
 
-
-  setModalVisible(visible){
-    this.setState({modalVisible:visible});
-  }
-
-  handleBlur = event => {
-    this.setState({isFocused: false});
-
-    if (this.props.onBlur) {
-      this.props.onBlur(event);
-    }
-  }
-
-  getRef() {
-    return firebaseApp.database().ref();
-  }
-
   componentWillMount() {
     this.getItems(this.itemsRef);
   }
@@ -75,12 +71,22 @@ export default class App extends Component<Props> {
     this.getItems(this.itemsRef);
   }
 
+  getRef() {
+    return firebaseApp.database().ref();
+  }
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
   getItems(itemsRef) {
     itemsRef.on('value', (snap) => {
       const items = [];
       snap.forEach((child) => {
         items.push({
           title: child.val().title,
+          repetitionNumber: child.val().repetitionNumber,
+          approachNumber: child.val().approachNumber,
           _key: child.key
         });
       });
@@ -88,6 +94,14 @@ export default class App extends Component<Props> {
         itemDataSource: this.state.itemDataSource.cloneWithRows(items)
       });
     });
+  }
+
+  handleBlur = event => {
+    this.setState({isFocused: false});
+
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
   }
 
   handleFocus = event => {
@@ -114,7 +128,7 @@ export default class App extends Component<Props> {
   }
 
   refreshText() {
-    this.setState({ text: '' });
+    this.setState({ text: '', repNumber: '', apprNumber: '' });
   }
 
   closeAddModal() {
@@ -128,10 +142,14 @@ export default class App extends Component<Props> {
 
   renderRow(item) {
     return (
-      <View style={ styles.li }>
+      <View style={styles.li}>
         <Text style={styles.liText}>
           {item.title}
+          {item.repetitionNumber}
+          {item.approachNumber}
         </Text>
+        <Text>{item.repetitionNumber}</Text>
+        <Text>{item.approachNumber}</Text>
         <View style={styles.buttonsContainer}>
           <View style={styles.removeBtn}>
             <Button
@@ -167,9 +185,11 @@ export default class App extends Component<Props> {
             this.closeAddModal();
           }}
         >
-          <View style={{ marginTop: 22 }}>
+          <View>
             <View>
-              <Toolbar title="Add item" />
+              <Toolbar
+                title="Добавить упражнение"
+              />
               <TextInput
                 style={styles.input}
                 selectionColor={BLUE}
@@ -180,16 +200,45 @@ export default class App extends Component<Props> {
                 onBlur={this.handleBlur}
                 {...otherProps}
                 value={this.state.text}
-                placeholder="Add item"
+                placeholder="Название упражнения"
                 onChangeText={(value) => this.setState({text:value})}
               />
+
+              <TextInput
+                style={styles.input}
+                selectionColor={BLUE}
+                underlineColorAndroid={
+                  isFocused ? BLUE : LIGHT_GRAY
+                }
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                {...otherProps}
+                value={this.state.repNumber}
+                placeholder="Количество повторений"
+                onChangeText={(value) => this.setState({repNumber:value})}
+              />
+
+              <TextInput
+                style={styles.input}
+                selectionColor={BLUE}
+                underlineColorAndroid={
+                  isFocused ? BLUE : LIGHT_GRAY
+                }
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                {...otherProps}
+                value={this.state.apprNumber}
+                placeholder="Количесвто подходов"
+                onChangeText={(value) => this.setState({apprNumber:value})}
+              />
+
               <TouchableHighlight
                 onPress={() => {
-                  this.itemsRef.push({ title: this.state.text });
+                  this.itemsRef.push({ title: this.state.text, repetitionNumber: this.state.repNumber, approachNumber: this.state.apprNumber });
                   this.setModalVisible(!this.state.modalVisible);
                 }}
               >
-                <Text style={styles.save}>Save Item</Text>
+                <Text style={styles.save}>Сохранить</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
@@ -197,7 +246,7 @@ export default class App extends Component<Props> {
                   this.setModalVisible(!this.state.modalVisible);
                 }}
               >
-                <Text style={styles.cancel}>Canсel</Text>
+                <Text style={styles.cancel}>Закрыть</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -211,9 +260,9 @@ export default class App extends Component<Props> {
             this.closeEditModal();
           }}
         >
-          <View style={{ marginTop: 22 }}>
+          <View>
             <View>
-              <Toolbar title="Edit item" />
+              <Toolbar title="Изменить упражнение" />
               <TextInput
                 style={styles.input}
                 selectionColor={BLUE}
@@ -224,20 +273,50 @@ export default class App extends Component<Props> {
                 onBlur={this.handleBlur}
                 {...otherProps}
                 value={this.state.itemToEdit ? this.state.itemToEdit.text : ''}
-                placeholder="Edit item"
+                placeholder="Название упражнения"
                 onChangeText={(value) => this.setState({editText:value})}
               />
+
+              <TextInput
+                style={styles.input}
+                selectionColor={BLUE}
+                underlineColorAndroid={
+                  isFocused ? BLUE : LIGHT_GRAY
+                }
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                {...otherProps}
+                /* value={this.state.itemToEdit ? this.state.itemToEdit.repetitionNumber : ''} */
+                value={this.state.itemToEdit ? this.state.itemToEdit.repNumber : ''}
+                placeholder="Количество повторений"
+                onChangeText={(value) => this.setState({editRepNumber:value})}
+              />
+
+              <TextInput
+                style={styles.input}
+                selectionColor={BLUE}
+                underlineColorAndroid={
+                  isFocused ? BLUE : LIGHT_GRAY
+                }
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                {...otherProps}
+                value={this.state.itemToEdit ? this.state.itemToEdit.apprNumber : ''}
+                placeholder="Количество подходов"
+                onChangeText={(value) => this.setState({editApprNumber:value})}
+              />
+
               <TouchableHighlight
                 onPress={() => {
                   const updates = {};
                   const key = this.state.itemToEdit._key;
-                  updates['/items/' + key] = { title: this.state.editText };
+                  updates['/items/' + key] = { title: this.state.editText, repetitionNumber: this.state.editRepNumber, approachNumber: this.state.editApprNumber };
                   this.getRef().update(updates);
 
                   this.closeEditModal();
                 }}
               >
-                <Text style={styles.save}>Save Item</Text>
+                <Text style={styles.save}>Сохранить</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
@@ -245,20 +324,20 @@ export default class App extends Component<Props> {
                   this.closeEditModal();
                 }}
               >
-                <Text style={styles.cancel}>Canсel</Text>
+                <Text style={styles.cancel}>Закрыть</Text>
               </TouchableHighlight>
 
             </View>
           </View>
         </Modal>
 
-        <Toolbar title="Item lists" />
+        <Toolbar title="SportPAD" />
         <ListView
           dataSource={this.state.itemDataSource}
           renderRow={this.renderRow}
         />
 
-        <Addbutton onPress={this.addItem.bind(this)} title="Add item" />
+        <Addbutton onPress={this.addItem.bind(this)} title="Добавить упражнение" />
       </View>
     );
   }

@@ -1,11 +1,12 @@
 'use strict'
 
-let React = require('react-native');
+const React = require('react-native');
+
 const { StyleSheet } = React;
 
 const constants = {
   actionsColor: '#3cb371'
-}
+};
 
 module.exports = StyleSheet.create({
   container: {
@@ -36,16 +37,14 @@ module.exports = StyleSheet.create({
   },
   navbar: {
     alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#eeeeee',
-    borderWidth: 1,
+    backgroundColor: '#2F80ED',
     justifyContent: 'center',
     height: 44,
     flexDirection: 'row'
   },
   navbarTitle: {
-    color: '#444444',
-    fontSize: 16,
+    color: '#ffffff',
+    fontSize: 24,
     fontWeight: '500'
   },
   toolbar: {
