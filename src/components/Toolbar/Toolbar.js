@@ -7,7 +7,7 @@ class Toolbar extends Component {
     return (
       <View>
         <StatusBar
-          backgroundColor="coral"
+          backgroundColor="#2F80ED"
           barStyle="light-content"
         />
         <View style={styles.navbar}>
