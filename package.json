@@ -13,12 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "firebase": "^4.9.1",
     "react": "16.6.3",
-<<<<<<< HEAD
     "react-native": "^0.58.4",
-=======
-    "react-native": "0.58.4",
-    "react-native-fontawesome": "^6.0.1",
->>>>>>> d33f5f6b25f1ed80885a0caa57fbb2c070c0017a
     "react-native-gesture-handler": "^1.1.0",
     "react-native-vector-icons": "^6.4.2",
     "weakset": "^1.0.0"
