@@ -30,7 +30,7 @@ const LIGHT_GRAY = '#D3D3D3';
 
 type Props = {};
 export default class App extends Component<Props> {
-  constructor(){
+  constructor() {
     super();
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {

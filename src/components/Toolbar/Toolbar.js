@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, StatusBar } from 'react-native';
-const styles = require('../../style');
 
+const styles = require('../../style');
 class Toolbar extends Component {
   render() {
     return (

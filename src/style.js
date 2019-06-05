@@ -25,12 +25,14 @@ module.exports = StyleSheet.create({
     paddingBottom: 16,
     display: 'flex',
     flexDirection: 'row',
-  },
+    borderRadius: 20,
+  }, 
   liContainer: {
     flex: 2
   },
   liText: {
     color: '#333333',
+    fontWeight: 'bold',
     fontSize: 16,
     flex: 2,
   },
